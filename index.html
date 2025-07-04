@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechTOM MS Teams Background Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Fredoka';
-            src: url('./Fredoka-VariableFont_wdth,wght.ttf') format('truetype');
-            font-weight: 100 900;
-            font-stretch: 75% 125%;
-            font-display: swap;
-        }
-        
         * {
             margin: 0;
             padding: 0;
@@ -20,87 +15,120 @@
         }
         
         body {
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: white;
         }
         
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }        
-        .header {
-            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .main-content {
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 30px;
-            padding: 30px;
+            grid-template-columns: 400px 1fr;
+            min-height: 100vh;
         }
         
-        .preview-section {
-            background: #f8fafc;
-            border-radius: 15px;
-            padding: 20px;
+        /* Left Instructions Panel */
+        .instructions-panel {
+            background: rgba(26, 32, 44, 0.9);
+            padding: 40px 30px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+        
+        .logo-section {
+            margin-bottom: 40px;
+        }
+        
+        .logo-section h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }        
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff7b00 0%, #ff4757 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .tagline {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-top: 15px;
+        }
+        
+        .instructions {
+            margin-bottom: 30px;
+        }
+        
+        .instructions h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+        
+        .instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .instructions li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }        
+        .instructions li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ff7b00;
+            font-weight: bold;
+        }
+        
+        /* Right App Panel */
+        .app-panel {
+            background: white;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }        
-        .preview-title {
+        }
+        
+        .app-header {
+            background: rgba(26, 32, 44, 0.95);
+            color: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .app-header h2 {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
         
-        #canvas {
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            max-width: 100%;
-            height: auto;
+        .app-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
         }
         
-        .export-btn {
-            margin-top: 20px;
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
-        }
-        
-        .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        .app-content {
+            flex: 1;
+            padding: 30px;
+            background: #f8fafc;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
         }        
         .controls-section {
             display: flex;
@@ -109,13 +137,15 @@
         }
         
         .control-group {
-            background: #f8fafc;
-            border-radius: 15px;
-            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .control-group h3 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #2d3748;
             margin-bottom: 15px;
@@ -124,43 +154,44 @@
         .role-selector {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
         
         .role-btn {
             background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 12px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;            cursor: pointer;
-            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
             text-align: center;
-        }
-        
+            color: #4a5568;
+        }        
         .role-btn:hover {
-            border-color: #667eea;
+            border-color: #cbd5e0;
             background: #f7fafc;
         }
         
         .role-btn.active {
-            background: #667eea;
+            background: #2d3748;
             color: white;
-            border-color: #667eea;
+            border-color: #2d3748;
         }
         
         .quotes-container {
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 8px;
             background: white;
         }
         
         .quote-item {
-            padding: 15px;
+            padding: 12px 15px;
             border-bottom: 1px solid #f1f5f9;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -168,64 +199,126 @@
         
         .quote-item:hover {
             background: #f8fafc;
-        }        
+        }
+        
         .quote-item.selected {
             background: #e6fffa;
-            border-left: 4px solid #38b2ac;
+            border-left: 3px solid #38a169;
         }
         
         .quote-text {
             font-weight: 500;
             color: #2d3748;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             line-height: 1.4;
-        }
-        
+            font-size: 0.9rem;
+        }        
         .quote-author {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #718096;
             font-style: italic;
         }
         
-        .custom-quote {
-            margin-top: 15px;
-        }
-        
         .custom-quote textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1rem;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
             resize: vertical;
-            min-height: 80px;
-            transition: border-color 0.3s ease;
-        }        
+            min-height: 70px;
+            transition: border-color 0.2s ease;
+        }
+        
         .custom-quote textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #4a5568;
         }
         
         .custom-quote input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1rem;
-            margin-top: 10px;
-            transition: border-color 0.3s ease;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            transition: border-color 0.2s ease;
         }
         
         .custom-quote input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #4a5568;
+        }        
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .preview-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        #canvas {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            height: auto;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .export-btn {
+            margin-top: 20px;
+            background: #2d3748;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .export-btn:hover {
+            background: #4a5568;
+            transform: translateY(-1px);
+        }        
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 2px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
         }
         
         @media (max-width: 1024px) {
-            .main-content {
+            .container {
                 grid-template-columns: 1fr;
+            }
+            
+            .instructions-panel {
+                padding: 20px;
+            }
+            
+            .app-content {
+                grid-template-columns: 1fr;
+                padding: 20px;
             }
             
             .role-selector {
@@ -236,80 +329,100 @@
         @media (max-width: 768px) {
             .role-selector {
                 grid-template-columns: repeat(2, 1fr);
-            }            
-            .header h1 {
-                font-size: 2rem;
             }
-            
-            .header p {
-                font-size: 1rem;
-            }
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: #cbd5e0;
-            border-radius: 3px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-            background: #a0aec0;
         }
     </style>
-</head>
-<body>
+</head><body>
     <div class="container">
-        <div class="header">
-            <h1>TechTOM MS Teams Background Generator</h1>
-            <p>Create your own Teams Background and show your Love and Support for TechTOM. Choose your favourite Quote or Type in your own quote.</p>
-        </div>        
-        <div class="main-content">
-            <div class="preview-section">
-                <h3 class="preview-title">Preview</h3>
-                <canvas id="canvas" width="1920" height="1080"></canvas>
-                <button class="export-btn" onclick="exportImage()">
-                    📸 Export Background
-                </button>
+        <!-- Left Instructions Panel -->
+        <div class="instructions-panel">
+            <div class="logo-section">
+                <h1>TechTOM <span class="version-badge">2.7</span></h1>
+                <p class="tagline">Create your own Teams Background and show your Love and Support for TechTOM. Choose your favourite Quote or Type in your own quote.</p>
             </div>
             
-            <div class="controls-section">
-                <div class="control-group">
-                    <h3>Select Role</h3>
-                    <div class="role-selector">
-                        <button class="role-btn active" onclick="selectRole('developer')">👨‍💻 Developer</button>
-                        <button class="role-btn" onclick="selectRole('product-owner')">👤 Product Owner</button>
-                        <button class="role-btn" onclick="selectRole('product-manager')">🧭 Product Manager</button>
-                        <button class="role-btn" onclick="selectRole('qa-lead')">🧪 QA Lead</button>
-                        <button class="role-btn" onclick="selectRole('designer')">🎨 UI/UX Designer</button>
-                        <button class="role-btn" onclick="selectRole('architect')">🧠 Solution Architect</button>
+            <div class="instructions">
+                <h3>How to Use</h3>
+                <ul>
+                    <li>Select your role from the available options</li>
+                    <li>Browse and click on quotes to see live preview</li>
+                    <li>Or type your own custom quote</li>
+                    <li>Click "Export Background" to download</li>
+                    <li>Upload to Microsoft Teams as your background</li>
+                </ul>
+            </div>
+            
+            <div class="instructions">
+                <h3>Features</h3>
+                <ul>
+                    <li>120+ Curated quotes across 6 tech roles</li>
+                    <li>Custom quote input with author field</li>
+                    <li>Real-time preview functionality</li>
+                    <li>High-quality JPG export</li>
+                    <li>Responsive design for all devices</li>
+                </ul>
+            </div>
+            
+            <div class="instructions">
+                <h3>Tech Roles Available</h3>
+                <ul>
+                    <li>👨‍💻 Developer (20+ quotes)</li>
+                    <li>👤 Product Owner (20+ quotes)</li>
+                    <li>🧭 Product Manager (20+ quotes)</li>
+                    <li>🧪 QA Lead (20+ quotes)</li>
+                    <li>🎨 UI/UX Designer (20+ quotes)</li>
+                    <li>🧠 Solution Architect (20+ quotes)</li>
+                </ul>
+            </div>
+        </div>        
+        <!-- Right App Panel -->
+        <div class="app-panel">
+            <div class="app-header">
+                <h2>Background Generator</h2>
+                <p>Create your personalized TechTOM Teams background</p>
+            </div>
+            
+            <div class="app-content">
+                <div class="controls-section">
+                    <div class="control-group">
+                        <h3>Select Role</h3>
+                        <div class="role-selector">
+                            <button class="role-btn active" onclick="selectRole('developer')">👨‍💻 Developer</button>
+                            <button class="role-btn" onclick="selectRole('product-owner')">👤 Product Owner</button>
+                            <button class="role-btn" onclick="selectRole('product-manager')">🧭 Product Manager</button>
+                            <button class="role-btn" onclick="selectRole('qa-lead')">🧪 QA Lead</button>
+                            <button class="role-btn" onclick="selectRole('designer')">🎨 UI/UX Designer</button>
+                            <button class="role-btn" onclick="selectRole('architect')">🧠 Solution Architect</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Choose Quote</h3>
+                        <div class="quotes-container scrollbar-thin" id="quotesContainer">
+                            <!-- Quotes will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Custom Quote</h3>
+                        <div class="custom-quote">
+                            <textarea id="customQuoteText" placeholder="Type your own inspirational quote here..."></textarea>
+                            <input type="text" id="customQuoteAuthor" placeholder="Author name (optional)">
+                        </div>
                     </div>
                 </div>
                 
-                <div class="control-group">
-                    <h3>Choose Quote</h3>
-                    <div class="quotes-container scrollbar-thin" id="quotesContainer">
-                        <!-- Quotes will be populated here -->
-                    </div>
-                </div>
-                
-                <div class="control-group">
-                    <h3>Custom Quote</h3>
-                    <div class="custom-quote">
-                        <textarea id="customQuoteText" placeholder="Type your own inspirational quote here..."></textarea>
-                        <input type="text" id="customQuoteAuthor" placeholder="Author name (optional)">
-                    </div>
+                <div class="preview-section">
+                    <h3 class="preview-title">Preview</h3>
+                    <canvas id="canvas" width="1920" height="1080"></canvas>
+                    <button class="export-btn" onclick="exportImage()">
+                        Export Background
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
