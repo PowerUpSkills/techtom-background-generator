@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTOM MS Teams Background Generator</title>
+    <style>
+        @font-face {
+            font-family: 'Fredoka';
+            src: url('./Fredoka-VariableFont_wdth,wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-stretch: 75% 125%;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }        
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .preview-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }        
+        .preview-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        
+        #canvas {
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .export-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        }        
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .control-group {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .control-group h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .role-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .role-btn:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+        
+        .role-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .quotes-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+        }
+        
+        .quote-item {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .quote-item:hover {
+            background: #f8fafc;
+        }        
+        .quote-item.selected {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+        }
+        
+        .quote-text {
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .quote-author {
+            font-size: 0.85rem;
+            color: #718096;
+            font-style: italic;
+        }
+        
+        .custom-quote {
+            margin-top: 15px;
+        }
+        
+        .custom-quote textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.3s ease;
+        }        
+        .custom-quote textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .custom-quote input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .custom-quote input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .role-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .role-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 3px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TechTOM MS Teams Background Generator</h1>
+            <p>Create your own Teams Background and show your Love and Support for TechTOM. Choose your favourite Quote or Type in your own quote.</p>
+        </div>        
+        <div class="main-content">
+            <div class="preview-section">
+                <h3 class="preview-title">Preview</h3>
+                <canvas id="canvas" width="1920" height="1080"></canvas>
+                <button class="export-btn" onclick="exportImage()">
+                    📸 Export Background
+                </button>
+            </div>
+            
+            <div class="controls-section">
+                <div class="control-group">
+                    <h3>Select Role</h3>
+                    <div class="role-selector">
+                        <button class="role-btn active" onclick="selectRole('developer')">👨‍💻 Developer</button>
+                        <button class="role-btn" onclick="selectRole('product-owner')">👤 Product Owner</button>
+                        <button class="role-btn" onclick="selectRole('product-manager')">🧭 Product Manager</button>
+                        <button class="role-btn" onclick="selectRole('qa-lead')">🧪 QA Lead</button>
+                        <button class="role-btn" onclick="selectRole('designer')">🎨 UI/UX Designer</button>
+                        <button class="role-btn" onclick="selectRole('architect')">🧠 Solution Architect</button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3>Choose Quote</h3>
+                    <div class="quotes-container scrollbar-thin" id="quotesContainer">
+                        <!-- Quotes will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3>Custom Quote</h3>
+                    <div class="custom-quote">
+                        <textarea id="customQuoteText" placeholder="Type your own inspirational quote here..."></textarea>
+                        <input type="text" id="customQuoteAuthor" placeholder="Author name (optional)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
